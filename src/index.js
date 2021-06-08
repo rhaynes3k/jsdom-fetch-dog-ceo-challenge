@@ -5,16 +5,15 @@ const imgUrl = "https://dog.ceo/api/breeds/image/random/4"
 const breedUrl = 'https://dog.ceo/api/breeds/list/all'
 let dogs = document.getElementById('dog-image-container')
 let h2 = document.createElement('h2')
-
+const breedList = document.getElementById('dog-breeds')
+let breedArray = []
 function dogPix(){
   fetch(imgUrl)
   .then(res => res.json())
   .then(data => {
       data.message.forEach(image => imgs(image))
-      // ?=console.log(data.message)
   })
 }
-// dogPix()
 
 function imgs(image){
     let dogs = document.getElementById('dog-image-container')
@@ -28,24 +27,51 @@ function dogBreeds(){
   .then(resp => resp.json())
   .then(data => {
     // console.log(data.message)
-    for(const breed in data.message){
-      breedLi(breed)
-      // console.log(`${breed}: ${data.message[breed]}`)
-    }
+    let brdArr = Object.keys(data.message)
+    // console.log(brdArr)
+    breedLi(brdArr)
   })
 }
-dogBreeds()
 
-function breedLi(breed){
-  let breedList = document.getElementById('dog-breeds')
-  let brdLst = document.createElement('li')
-  brdLst.innerHTML = breed
-  console.log(breed)
-  breedList.appendChild(brdLst)
+function breedLi(brdArr){
+  brdArr.forEach(list => {
+    breedList.innerHTML += `
+      <li id='li-brd'>
+        ${list}
+      </li>
+    `
+  const allBreeds = document.querySelectorAll('#li-brd')
+  for(const brd of allBreeds){
+    brd.addEventListener('click', breedColorChange)
+  }
+  })
 }
+
+function breedColorChange(){
+  const clk = event.target
+  if(clk){
+    clk.style.color = "#ff0000"
+  }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
   imgs()
   dogPix()
   dogBreeds()
-  breedLi()
 })
+
+
+  let filOps = document.querySelector('#breed-dropdown')
+  console.log(filOps)
+let filterArr = Array.from(filOps)
+console.log(filterArr)
+
+for(const fil of filOps){
+  console.log(fil)
+  fil.addEventListener('change', function(){
+    console.log('selected')
+})
+}
+
+
+// function logMe(){
