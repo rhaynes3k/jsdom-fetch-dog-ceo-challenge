@@ -1,12 +1,17 @@
 
-
+document.addEventListener('DOMContentLoaded', function () {
+  imgs()
+  dogPix()
+  dogBreeds()
+})
 console.log('%c HI', 'color: firebrick')
 const imgUrl = "https://dog.ceo/api/breeds/image/random/4"
 const breedUrl = 'https://dog.ceo/api/breeds/list/all'
+let breedList = document.getElementById('dog-breeds')
 let dogs = document.getElementById('dog-image-container')
 let h2 = document.createElement('h2')
-const breedList = document.getElementById('dog-breeds')
 let breedArray = []
+
 function dogPix(){
   fetch(imgUrl)
   .then(res => res.json())
@@ -26,14 +31,32 @@ function dogBreeds(){
   fetch(breedUrl)
   .then(resp => resp.json())
   .then(data => {
-    // console.log(data.message)
     let brdArr = Object.keys(data.message)
-    // console.log(brdArr)
     breedLi(brdArr)
   })
 }
 
+let filterOptions = document.querySelector('#breed-dropdown')
+filterOptions.addEventListener('change', function(event){
+  let filPk = event.target.value
+  console.log('selected', filPk, filterOptions)
+  breedFilter(filPk)
+})
+
+function breedFilter(filPk) {
+  console.log (filPk)
+      fetch(breedUrl)
+      .then(resp => resp.json())
+      .then(data => {
+        console.log(filPk)
+        let brdArr = Object.keys(data.message).filter(k => k[0] === filPk)
+        console.log(brdArr)
+        breedLi(brdArr)
+      })
+}
+
 function breedLi(brdArr){
+  breedList.innerHTML = ""
   brdArr.forEach(list => {
     breedList.innerHTML += `
       <li id='li-brd'>
@@ -49,29 +72,5 @@ function breedLi(brdArr){
 
 function breedColorChange(){
   const clk = event.target
-  if(clk){
-    clk.style.color = "#ff0000"
-  }
+  clk.style.color = "#ff0000"
 }
-
-document.addEventListener('DOMContentLoaded', function () {
-  imgs()
-  dogPix()
-  dogBreeds()
-})
-
-
-  let filOps = document.querySelector('#breed-dropdown')
-  console.log(filOps)
-let filterArr = Array.from(filOps)
-console.log(filterArr)
-
-for(const fil of filOps){
-  console.log(fil)
-  fil.addEventListener('change', function(){
-    console.log('selected')
-})
-}
-
-
-// function logMe(){
