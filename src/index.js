@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
   dogPix()
   dogBreeds()
 })
+
 console.log('%c HI', 'color: firebrick')
 const imgUrl = "https://dog.ceo/api/breeds/image/random/4"
 const breedUrl = 'https://dog.ceo/api/breeds/list/all'
@@ -39,18 +40,14 @@ function dogBreeds(){
 let filterOptions = document.querySelector('#breed-dropdown')
 filterOptions.addEventListener('change', function(event){
   let filPk = event.target.value
-  console.log('selected', filPk, filterOptions)
   breedFilter(filPk)
 })
 
 function breedFilter(filPk) {
-  console.log (filPk)
       fetch(breedUrl)
       .then(resp => resp.json())
       .then(data => {
-        console.log(filPk)
         let brdArr = Object.keys(data.message).filter(k => k[0] === filPk)
-        console.log(brdArr)
         breedLi(brdArr)
       })
 }
